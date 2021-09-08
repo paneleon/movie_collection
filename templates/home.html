@@ -1,0 +1,50 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %} Movie Collection {% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="right">
+        <div class="banner-crop">
+            <img src="static/film.jpeg" class="banner">
+        </div>
+        <div class="form">
+        <h3>Add a new movie to the collection </h3>
+
+        <form action="{{ url_for('add') }}" method="post">
+            <input type="text" id="link" name="link" class="form-control" placeholder="IMDB link"><br>
+            <p class="response"> {{ request.args.get('response', " ") }} </p>
+            <input type="submit" class="btn btn-warning submit">
+        </form>
+        </div>
+    </div>
+
+    <div class="left">
+        <div class="container">
+            <h1>My Movie Collection</h1>
+            <hr>
+            {% for movie in collection: %}
+            <div class="movie">
+                <div class="poster-and-link">
+                    <img src="{{ movie.image }}" class="poster"><br>
+                    <a href="{{ movie.url }}" class="imdb"> Link to IMDB page</a>
+                </div>
+                <h2> {{ movie.name }} </h2>
+                <h4> ⭐ {{ movie.rating }}</h4>
+                <h4>{{ movie.duration }}</h4>
+                <h4> {{ movie.genre }} </h4>
+                <h5> {{ movie.description }} </h5>
+                <h6> {{ movie.actors }} </h6>
+                <a href="{{ url_for('remove', name=movie.name.replace(' ', '')) }}" class="btn btn-warning watched">Watched</a>
+            </div>
+            <hr>
+        {% endfor %}
+
+        </div>
+    </div>
+
+{% endblock %}
